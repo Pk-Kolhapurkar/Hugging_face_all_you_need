@@ -1,0 +1,88 @@
+**Hugging Face Transformers - Quick Notes**
+
+### 1. **Installation**
+```bash
+pip install transformers
+```
+
+### 2. **Using Pipelines (Easiest Way)**
+- `pipeline()` provides prebuilt models for common NLP tasks.
+
+```python
+from transformers import pipeline
+
+classifier = pipeline("sentiment-analysis")
+print(classifier("I love this!"))
+```
+
+### 3. **Loading Pretrained Models with AutoClass**
+- `AutoModel` and `AutoTokenizer` help load models easily.
+
+```python
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+
+model_name = "bert-base-uncased"
+model = AutoModelForSequenceClassification.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+```
+
+### 4. **Tokenization (Converting Text to Model Input)**
+```python
+text = "Hello, how are you?"
+inputs = tokenizer(text, return_tensors="pt")  # PyTorch tensors
+print(inputs)
+```
+
+### 5. **Generating Text (Example with GPT-2)**
+```python
+from transformers import AutoModelForCausalLM
+
+generator = pipeline("text-generation", model="gpt2")
+print(generator("Once upon a time", max_length=50))
+```
+
+### 6. **Mask Filling (Example with BERT)**
+```python
+unmasker = pipeline("fill-mask", model="bert-base-uncased")
+print(unmasker("The capital of France is [MASK]."))
+```
+
+### 7. **Translation & Summarization**
+```python
+translator = pipeline("translation_en_to_fr")
+print(translator("Hello, how are you?"))
+
+summarizer = pipeline("summarization")
+print(summarizer("Long article text..."))
+```
+
+### 8. **Speech-to-Text & Text-to-Speech**
+```python
+speech_recognizer = pipeline("automatic-speech-recognition")
+tts = pipeline("text-to-speech")
+```
+
+### 9. **Fine-Tuning a Model (Basic Steps)**
+1. Load a pretrained model.
+2. Prepare a dataset.
+3. Train using `Trainer` or `Accelerate`.
+
+### 10. **Saving and Loading a Model**
+```python
+model.save_pretrained("my_model")
+tokenizer.save_pretrained("my_model")
+
+# Load later
+model = AutoModelForSequenceClassification.from_pretrained("my_model")
+tokenizer = AutoTokenizer.from_pretrained("my_model")
+```
+
+### **Key Takeaways**
+- Use `pipeline()` for quick tasks.
+- `AutoModel` and `AutoTokenizer` help load models easily.
+- Tokenization is necessary before feeding text into models.
+- Hugging Face supports tasks like text generation, classification, summarization, and translation.
+- Fine-tuning is needed for custom datasets.
+
+
+
